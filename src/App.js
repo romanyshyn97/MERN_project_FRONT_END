@@ -1,4 +1,3 @@
-import React, { useState, useCallback } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,19 +12,12 @@ import UserPlaces from "./places/pages/UserPlaces";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import Authentication from "./user/pages/Authentication";
 import { AuthenticateContext } from "./shared/context/auth-context";
+import { useAuthentication } from "./shared/hooks/auth-hook";
+
+
 
 const App = () => {
-  const [token, setToken] = useState(false);
-  const [userId, setUserId] = useState(false);
-
-  const login = useCallback((uid, token) => {
-    setToken(token);
-    setUserId(uid);
-  }, []);
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-  }, []);
+  const {token, login, logout, userId} = useAuthentication();
 
   let routes;
   if (token) {
@@ -70,7 +62,7 @@ const App = () => {
         token: token,
         userId: userId,
         login: login,
-        logout: logout
+        logout: logout,
       }}
     >
       <Router>
