@@ -16,7 +16,7 @@ import {
 import { AuthenticateContext } from "../../shared/context/auth-context";
 import "./Authentication.css";
 
-const Authentication = (props) => {
+const Authentication = () => {
   const auth = useContext(AuthenticateContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
@@ -80,7 +80,7 @@ const Authentication = (props) => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     } else {
       try {
@@ -94,8 +94,7 @@ const Authentication = (props) => {
           "POST",
           formData
         );
-        auth.login(responseData.user.id);
-        console.log(auth.login)
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };
@@ -120,7 +119,12 @@ const Authentication = (props) => {
             />
           )}
           {!isLoginMode && (
-            <ImageUpload id="image" center onInput={inputHandler} />
+            <ImageUpload
+              id="image"
+              center
+              onInput={inputHandler}
+              errorText="Please choose an image"
+            />
           )}
           <Input
             id="email"
